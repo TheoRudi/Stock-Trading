@@ -12,10 +12,10 @@ from bs4 import BeautifulSoup
 import pandas as pd
 
 
-#tickers = ["AAPL","BA","CAT","CVX","CSCO"]
-
-tickers = ["OCDDY"]
-
+tickers = ["AXP","AAPL","BA","CAT","CVX","CSCO","DIS","DOW", "XOM",
+           "HD","IBM","INTC","JNJ","KO","MCD","MMM","MRK","MSFT",
+           "NKE","PFE","PG","TRV","UTX","UNH","VZ","V","WMT","WBA"]
+           
 # def readTickers(exchangeFilePath):
 #     file_path = exchangeFilePath
 #     lines = open(file_path,'r').readlines()

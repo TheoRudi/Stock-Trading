@@ -7,12 +7,41 @@
 
 
 import requests
+import time
+import re
 from bs4 import BeautifulSoup
 import pandas as pd
 
-tickers = ["AXP","AAPL","BA","CAT","CVX","CSCO","DIS","DOW", "XOM",
+tickers = []
+
+def readTickers(exchangeFilePath):
+    file_path = exchangeFilePath
+    lines = open(file_path,'r').readlines()
+    for l in lines[1:]:
+        tickers.append(re.split(r'\t+', l)[0])
+
+setting_choice = input("Please type your setting choice: ")
+print("Calculating F-Score(s) for " + str(setting_choice))
+
+if setting_choice == "NASDAQ":
+    readTickers("../Stock_Exchanges/NASDAQ.txt")
+elif setting_choice == "NYSE":
+    readTickers("../Stock_Exchanges/NYSE.txt")
+elif setting_choice == "LSE":
+    readTickers("../Stock_Exchanges/LSE.txt")
+elif setting_choice == "breakthrough":
+    readTickers("../Indicators/Breakthrough_Stocks_RSI.txt")
+elif setting_choice == "all":
+    readTickers("../Stock_Exchanges/NASDAQ.txt")
+    readTickers("../Stock_Exchanges/NYSE.txt")
+    readTickers("../Stock_Exchanges/LSE.txt")
+elif setting_choice == "test":
+    tickers = ["MSFT", "AAPL", "MMM", "JNJ", "CSCO"]
+elif setting_choice == "DOW":
+    tickers = ["AXP","AAPL","BA","CAT","CVX","CSCO","DIS","DOW", "XOM",
            "HD","IBM","INTC","JNJ","KO","MCD","MMM","MRK","MSFT",
            "NKE","PFE","PG","TRV","UTX","UNH","VZ","V","WMT","WBA"]
+
 
 #list of tickers whose financial data needs to be extracted
 financial_dir = {}
@@ -20,9 +49,8 @@ financial_dir = {}
 for ticker in tickers:
     try:
         print("scraping financial statement data for ",ticker)
-        temp_dir = {}
-
     #getting balance sheet data from yahoo finance for the given ticker
+        temp_dir = {}
         url = 'https://in.finance.yahoo.com/quote/'+ticker+'/balance-sheet?p='+ticker
         page = requests.get(url)
         page_content = page.content
@@ -43,7 +71,7 @@ for ticker in tickers:
             rows = t.find_all("div", {"class" : "rw-expnded"})
             for row in rows:
                 temp_dir[row.get_text(separator='|').split("|")[0]]=row.get_text(separator='|').split("|")[1]
-
+        
         #getting cashflow statement data from yahoo finance for the given ticker
         url = 'https://in.finance.yahoo.com/quote/'+ticker+'/cash-flow?p='+ticker
         page = requests.get(url)
@@ -54,17 +82,31 @@ for ticker in tickers:
             rows = t.find_all("div", {"class" : "rw-expnded"})
             for row in rows:
                 temp_dir[row.get_text(separator='|').split("|")[0]]=row.get_text(separator='|').split("|")[1]
-
+        
+        #getting key statistics data from yahoo finance for the given ticker
+        url = 'https://in.finance.yahoo.com/quote/'+ticker+'/key-statistics?p='+ticker
+        page = requests.get(url)
+        page_content = page.content
+        soup = BeautifulSoup(page_content,'html.parser')
+        tabl = soup.findAll("table", {"class": "W(100%) Bdcl(c)"}) # try soup.findAll("table") if this line gives error 
+        for t in tabl:
+            rows = t.find_all("tr")
+            for row in rows:
+                if len(row.get_text(separator='|').split("|")[0:2])>0:
+                    temp_dir[row.get_text(separator='|').split("|")[0]]=row.get_text(separator='|').split("|")[-1]    
+        
         #combining all extracted information with the corresponding ticker
         financial_dir[ticker] = temp_dir
-
     except:
         print("Problem scraping data for ",ticker)
 
 
 #storing information in pandas dataframe
 combined_financials = pd.DataFrame(financial_dir)
-#combined_financials.dropna(axis=1,inplace=True) #dropping columns with NaN values
+combined_financials.dropna(how='all',axis=1,inplace=True) #dropping columns with all NaN values
+tickers = combined_financials.columns #updating the tickers list based on only those tickers whose values were successfully extracted
+for ticker in tickers:
+    combined_financials = combined_financials[~combined_financials[ticker].str.contains("[a-z]").fillna(False)]
 
 # creating dataframe with relevant financial information for each stock using fundamental data
 stats = ["EBITDA",
@@ -82,34 +124,32 @@ stats = ["EBITDA",
 
 indx = ["EBITDA","D&A","MarketCap","NetIncome","CashFlowOps","Capex","CurrAsset",
         "CurrLiab","PPE","BookValue","TotDebt","DivYield"]
+all_stats = {}
+for ticker in tickers:
+    try:
+        temp = combined_financials[ticker]
+        ticker_stats = []
+        for stat in stats:
+            ticker_stats.append(temp.loc[stat])
+        all_stats['{}'.format(ticker)] = ticker_stats
+    except:
+        print("can't read data for ",ticker)
 
-def info_filter(df,stats,indx):
-    """function to filter relevant financial information for each 
-       stock and transforming string inputs to numeric"""
-    tickers = df.columns
-    all_stats = {}
-    for ticker in tickers:
-        try:
-            temp = df[ticker]
-            ticker_stats = []
-            for stat in stats:
-                ticker_stats.append(temp.loc[stat])
-            all_stats['{}'.format(ticker)] = ticker_stats
-        except:
-            print("can't read data for ",ticker)
-    
-    all_stats_df = pd.DataFrame(all_stats,index=indx)
-    
-    # cleansing of fundamental data imported in dataframe
-    all_stats_df[tickers] = all_stats_df[tickers].replace({',': ''}, regex=True)
-    for ticker in all_stats_df.columns:
-        all_stats_df[ticker] = pd.to_numeric(all_stats_df[ticker].values,errors='coerce')
-    return all_stats_df
 
+# cleansing of fundamental data imported in dataframe
+all_stats_df = pd.DataFrame(all_stats,index=indx)
+all_stats_df[tickers] = all_stats_df[tickers].replace({',': ''}, regex=True)
+all_stats_df[tickers] = all_stats_df[tickers].replace({'M': 'E+03'}, regex=True)
+all_stats_df[tickers] = all_stats_df[tickers].replace({'B': 'E+06'}, regex=True)
+all_stats_df[tickers] = all_stats_df[tickers].replace({'T': 'E+09'}, regex=True)
+all_stats_df[tickers] = all_stats_df[tickers].replace({'%': 'E-02'}, regex=True)
+for ticker in all_stats_df.columns:
+    all_stats_df[ticker] = pd.to_numeric(all_stats_df[ticker].values,errors='coerce')
+all_stats_df.dropna(axis=1,inplace=True)
+tickers = all_stats_df.columns
 
 # calculating relevant financial metrics for each stock
-transpose_df = info_filter(combined_financials,stats,indx)
-#transpose_df = all_stats_df.transpose()
+transpose_df = all_stats_df.transpose()
 final_stats_df = pd.DataFrame()
 final_stats_df["EBIT"] = transpose_df["EBITDA"] - transpose_df["D&A"]
 final_stats_df["TEV"] =  transpose_df["MarketCap"].fillna(0) \
@@ -150,3 +190,10 @@ value_high_div_stocks = final_stats_df.sort_values("CombinedRank").iloc[:,[2,4,6
 print("------------------------------------------------")
 print("Magic Formula and Dividend Yield combined")
 print(value_high_div_stocks)
+
+
+##########################Printing Dataframes to file#########################
+fileName = "Ranked Stocks using Greenblat's Magic Formula_" + str(setting_choice) + "_" + str(time.time()) + ".txt"
+text_file = open(fileName, "w")
+text_file.write(str(value_high_div_stocks))
+text_file.close()
