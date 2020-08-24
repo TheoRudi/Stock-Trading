@@ -1,6 +1,0 @@
-[CSCO    8
-AAPL    7
-MMM     6
-JNJ     5
-MSFT    4
-dtype: int64]

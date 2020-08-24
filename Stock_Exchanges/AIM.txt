@@ -1,0 +1,101 @@
+Symbol	Description
+ABDP	AB Dynamics plc
+ABC	Abcam plc
+AMS	Advanced Medical Solutions Group plc
+APH	Alliance Pharma Plc
+AFM	Alpha Financial Markets Consulting Plc
+AFX	Alpha FX Group plc
+ASY	Andrews Sykes Group plc
+APGN	Applegreen plc
+ASC	ASOS plc
+ATYM	Atalaya Mining plc
+BMK	Benchmark Holdings plc
+PRSM	Blue Prism plc
+BOO	Boohoo Group plc
+BREE	Breedon Group plc
+BRK	Brooks Macdonald Group
+BUR	Burford Capital Ltd
+BMN	Bushveld Minerals Ltd
+CAM	Camellia
+CTH	Caretech Holdings plc
+CAML	Central Asia Metals
+CWR	Ceres Power Holdings
+CLIN	Clinigen Group plc
+CDM	Codemasters Group Holdings Limited
+CHRT	Cohort plc
+CRW	Craneware plc
+CREO	Creo Medical Group Plc
+CVSG	CVS Group plc
+DTG	Dart Group plc
+DGOC	Diversified Gas & Oil Plc
+DOTD	dotDigital Group plc
+GROW	Draper Esprit plc
+ESL	Eddie Stobart Logistics plc
+EMIS	Emis Group Plc
+FEVR	Fevertree Drinks plc
+TUNE	Focusrite plc
+FDEV	Frontier Developments plc
+GAMA	Gamma Communications Ltd
+GTLY	Gateley Holdings plc
+GBG	GB Group plc
+DATA	GlobalData plc
+GHH	Gooch & Housego
+GRP	Greencoat Renewables plc
+HGM	Highland Gold Mining
+HZD	Horizon Discovery Group plc
+HOTC	Hotel Chocolat Group plc
+HUR	Hurricane Energy plc
+HCM	Hutchison China Meditech
+IDEA	Ideagen Plc
+IGR	IG Design Group plc
+IMO	IMImobile plc
+IPX	Impax Asset Management Group Plc
+IOM	Iomart Group
+IQE	IQE plc
+ITM	ITM Power plc
+JSE	Jadestone Energy Inc
+JHD	James Halstead plc
+JSG	Johnson Service Group plc
+JDG	Judges Scientific plc
+KAPE	Kape Technologies Plc
+KWS	Keywords Studios plc
+KGH	Knights Group Hldgs
+LTG	Learning Technologies Group plc
+LGRS	Loungers plc
+MPE	M P Evans Group Plc
+MRL	Marlowe plc
+MTW	Mattioli Woods Plc
+MIDW	Midwich Group plc
+MAB1	Morgage Advice Bureau (Holdings) Ltd
+NFC	Next Fifteen Communications Group
+NICL	Nichols plc
+NUM	Numis Corporation
+PAF	Pan African Resources plc
+PEBB	Pebble Group plc
+POLR	Polar Capital Holdings Plc
+PMI	Premier Miton Group plc
+PURP	PurpleBricks Group plc
+RQIH	Randall & Quilter Investment Holdings Ltd
+RNWH	Renew Holdings Plc
+RST	Restore Plc
+RWS	RWS Holdings plc
+SCPA	Scapa Group plc
+SIR	Secure Income REIT plc
+SQZ	Serica Energy Plc
+SLN	Silence Therapeutics plc
+SMS	Smart Metering Systems plc
+KETL	Strix Group plc
+SUMO	Sumo Group
+TM17	Team17 Group Plc
+TCM	Telit Communications Plc
+TFW	Thorpe (F.W) plc
+TRCS	Tracsis plc
+TRMR	Tremor International Ltd
+UPR	Uniphar plc
+VCP	Victoria plc
+WAND	Wandisco plc
+WHR	Warehouse REIT plc
+WJG	Watkin Jones plc
+YOU	YouGov Plc
+YNGA	Young & Co's Brewery Plc
+YNGN 	Young & Co's Brewery Plc

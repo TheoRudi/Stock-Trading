@@ -1,16 +1,10 @@
-# ============================================================================
-# Greenblatt's Magic Formula Implementation
-# Author - Mayank Rasu
-
-# Please report bugs/issues in the Q&A section
-# =============================================================================
-
-
 import requests
 from datetime import datetime
 import re
 from bs4 import BeautifulSoup
 import pandas as pd
+import sys
+import numpy as np
 
 tickers = []
 
@@ -20,8 +14,8 @@ def readTickers(exchangeFilePath):
     for l in lines[1:]:
         tickers.append(re.split(r'\t+', l)[0])
 
-setting_choice = input("Please type your setting choice: ")
-print("Calculating F-Score(s) for " + str(setting_choice))
+setting_choice = sys.argv[1]
+print("Ranking Stocks in " + str(setting_choice) + " using Greenblat's Magic Formula")
 
 if setting_choice == "NASDAQ":
     readTickers("../Stock_Exchanges/NASDAQ.txt")
@@ -29,19 +23,28 @@ elif setting_choice == "NYSE":
     readTickers("../Stock_Exchanges/NYSE.txt")
 elif setting_choice == "LSE":
     readTickers("../Stock_Exchanges/LSE.txt")
+elif setting_choice == "AIM":
+    readTickers("../Stock_Exchanges/AIM.txt")
 elif setting_choice == "breakthrough":
     readTickers("../Indicators/Breakthrough_Stocks_RSI.txt")
 elif setting_choice == "all":
     readTickers("../Stock_Exchanges/NASDAQ.txt")
     readTickers("../Stock_Exchanges/NYSE.txt")
     readTickers("../Stock_Exchanges/LSE.txt")
+elif setting_choice == "AIM":
+    readTickers("../Stock_Exchanges/S&P500.txt")
 elif setting_choice == "test":
     tickers = ["MSFT", "AAPL", "MMM", "JNJ", "CSCO"]
 elif setting_choice == "DOW":
     tickers = ["AXP","AAPL","BA","CAT","CVX","CSCO","DIS","DOW", "XOM",
            "HD","IBM","INTC","JNJ","KO","MCD","MMM","MRK","MSFT",
            "NKE","PFE","PG","TRV","UTX","UNH","VZ","V","WMT","WBA"]
-
+elif setting_choice.isalnum:
+    readTickers("../Stock_Exchanges/S&P500.txt")
+    tickers = np.array_split(tickers, len(tickers)/30)
+    tickers = tickers[int(setting_choice)].tolist()
+else:
+    tickers.append(setting_choice)
 
 #list of tickers whose financial data needs to be extracted
 financial_dir = {}
@@ -193,7 +196,14 @@ print(value_high_div_stocks)
 
 
 ##########################Printing Dataframes to file#########################
-fileName = "Ranked Stocks using Greenblat's Magic Formula_" + str(setting_choice) + "_" + str(datetime.now().strftime("%m/%d/%Y")) + ".txt"
-text_file = open(fileName, "w")
+if setting_choice.isnumeric:
+    fileName = "MagicFormula-Ranked-Stocks_S&P500(Full).txt"
+    text_file = open(fileName, "a")
+
+else:
+    fileName = "MagicFormula-Ranked-Stocks_" + str(setting_choice) + ".txt"
+    text_file = open(fileName, "w")
+
+
 text_file.write(str(value_high_div_stocks))
 text_file.close()
