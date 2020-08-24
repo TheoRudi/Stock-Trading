@@ -72,17 +72,17 @@ setting_choice = input("Please type your setting choice: ")
 print("Calculating F-Score(s) for " + str(setting_choice))
 
 if setting_choice == "NASDAQ":
-    readTickers("/home/theo/Programs/Algorithmic Trading and Quantitative Analysis Using Python/Stock_Exchanges/NASDAQ.txt")
+    readTickers("../Stock_Exchanges/NASDAQ.txt")
 elif setting_choice == "NYSE":
-    readTickers("/home/theo/Programs/Algorithmic Trading and Quantitative Analysis Using Python/Stock_Exchanges/NYSE.txt")
+    readTickers("../Stock_Exchanges/NYSE.txt")
 elif setting_choice == "LSE":
-    readTickers("/home/theo/Programs/Algorithmic Trading and Quantitative Analysis Using Python/Stock_Exchanges/LSE.txt")
+    readTickers("../Stock_Exchanges/LSE.txt")
 elif setting_choice == "breakthrough":
     readTickers("../Indicators/Breakthrough_Stocks_RSI.txt")
 elif setting_choice == "all":
-    readTickers("/home/theo/Programs/Algorithmic Trading and Quantitative Analysis Using Python/Stock_Exchanges/NASDAQ.txt")
-    readTickers("/home/theo/Programs/Algorithmic Trading and Quantitative Analysis Using Python/Stock_Exchanges/NYSE.txt")
-    readTickers("/home/theo/Programs/Algorithmic Trading and Quantitative Analysis Using Python/Stock_Exchanges/LSE.txt")
+    readTickers("../Stock_Exchanges/NASDAQ.txt")
+    readTickers("../Stock_Exchanges/NYSE.txt")
+    readTickers("../Stock_Exchanges/LSE.txt")
 elif setting_choice == "test":
     tickers = ["MSFT", "AAPL", "MMM", "JNJ", "CSCO"]
 elif setting_choice == "DOW":
