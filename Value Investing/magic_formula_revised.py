@@ -199,11 +199,12 @@ print(value_high_div_stocks)
 if setting_choice.isnumeric:
     fileName = "MagicFormula-Ranked-Stocks_S&P500(Full).txt"
     text_file = open(fileName, "a")
+    text_file.write(str(value_high_div_stocks))
+    text_file.write("\n")
 
 else:
     fileName = "MagicFormula-Ranked-Stocks_" + str(setting_choice) + ".txt"
     text_file = open(fileName, "w")
-
-
-text_file.write(str(value_high_div_stocks))
+    text_file.write(str(value_high_div_stocks))
+    
 text_file.close()

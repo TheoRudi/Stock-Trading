@@ -3,5 +3,5 @@
 #over the dataset.
 import os
 
-for runNum in range(0, 3):
-    os.system("python magic_formula_revised.py " + str(runNum))
+for runNum in range(0, 16):
+    os.system("python3 magic_formula_revised.py " + str(runNum))
