@@ -1,0 +1,6 @@
+CSCO    8
+AAPL    7
+CAT     4
+CVX     3
+BA      1
+dtype: int64
