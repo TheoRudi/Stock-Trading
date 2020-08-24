@@ -7,7 +7,7 @@
 
 
 import requests
-import time
+from datetime import datetime
 import re
 from bs4 import BeautifulSoup
 import pandas as pd
@@ -193,7 +193,7 @@ print(value_high_div_stocks)
 
 
 ##########################Printing Dataframes to file#########################
-fileName = "Ranked Stocks using Greenblat's Magic Formula_" + str(setting_choice) + "_" + str(time.time()) + ".txt"
+fileName = "Ranked Stocks using Greenblat's Magic Formula_" + str(setting_choice) + "_" + str(datetime.now().strftime("%m/%d/%Y")) + ".txt"
 text_file = open(fileName, "w")
 text_file.write(str(value_high_div_stocks))
 text_file.close()
